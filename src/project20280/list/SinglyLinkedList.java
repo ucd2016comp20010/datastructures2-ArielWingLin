@@ -88,9 +88,11 @@ public class SinglyLinkedList<E> implements List<E> {
         return size;
     }
 
-    //@Override
+    @Override
     public boolean isEmpty() {
-        // TODO
+        if(head == null){
+            return true;
+        }
         return false;
     }
 
@@ -176,6 +178,7 @@ public class SinglyLinkedList<E> implements List<E> {
         // Testing size()
         System.out.println(ll);
         System.out.println(ll.size());
+        System.out.println(ll.isEmpty());
 
     }
 }
