@@ -8,12 +8,12 @@ public class SinglyLinkedList<E> implements List<E> {
 
     private static class Node<E> {
 
-        private final E element;            // reference to the element stored at this node
+        private final E element; // reference to the element stored at this node
 
         /**
          * A reference to the subsequent node in the list
          */
-        private Node<E> next;         // reference to the subsequent node in the list
+        private Node<E> next; // reference to the subsequent node in the list
 
         /**
          * Creates a node with the given element and next node.
@@ -56,31 +56,29 @@ public class SinglyLinkedList<E> implements List<E> {
         public void setNext(Node<E> n) {
             // TODO
         }
-    } //----------- end of nested Node class -----------
+    } // ----------- end of nested Node class -----------
 
     /**
      * The head node of the list
      */
-    private Node<E> head = null;               // head node of the list (or null if empty)
-
+    private Node<E> head = null; // head node of the list (or null if empty)
 
     /**
      * Number of nodes in the list
      */
-    private int size = 0;                      // number of nodes in the list
+    private int size = 0; // number of nodes in the list
 
     public SinglyLinkedList() {
-    }              // constructs an initially empty list
+    } // constructs an initially empty list
 
     @Override
     public int size() {
-        if(head == null){
+        if (head == null) {
             return 0;
-        }
-        else{
+        } else {
             int size = 0;
             Node<E> curr = head;
-            while(curr != null){
+            while (curr != null) {
                 size += 1;
                 curr = curr.getNext();
             }
@@ -90,7 +88,7 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public boolean isEmpty() {
-        if(head == null){
+        if (head == null) {
             return true;
         }
         return false;
@@ -98,19 +96,50 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public E get(int position) {
-        // TODO
-        return null;
+        if (position < 0 || position >= size()) {
+            System.out.println("Empty LinkedList");
+        }
+        if (head == null) {
+            throw new IllegalArgumentException("Empty LinkedList!");
+        }
+        int currPosition = 0;
+        Node<E> curr = head;
+
+        while (currPosition != position) {
+            curr = curr.getNext();
+            currPosition++;
+        }
+        return curr.getElement();
     }
 
     @Override
     public void add(int position, E e) {
-        // TODO
-    }
+        if (position < 0 || position >= size()) {
+            throw new IllegalArgumentException("Position is out of bounce!");
+        }
 
+        if (position == 0) {
+            head = new Node<E>(e, head);
+        }
+
+        Node<E> curr = head;
+        for (int currPosition = 0; currPosition < position; currPosition++) {
+            curr = curr.getNext();
+        }
+        curr.setNext(new Node<E>(e, curr.getNext()));
+    }
 
     @Override
     public void addFirst(E e) {
-        // TODO
+        if (head == null) {
+            head = new Node<E>(e, head);
+            return;
+        }
+
+        Node<E> last = head;
+        Node<E> newHead = new Node<E>(e, last);
+        head = newHead;
+        return;
     }
 
     @Override
@@ -136,7 +165,7 @@ public class SinglyLinkedList<E> implements List<E> {
         return null;
     }
 
-    //@Override
+    // @Override
     public Iterator<E> iterator() {
         return new SinglyLinkedListIterator<E>();
     }
@@ -173,7 +202,7 @@ public class SinglyLinkedList<E> implements List<E> {
     public static void main(String[] args) {
         SinglyLinkedList<Integer> ll = new SinglyLinkedList<Integer>();
         System.out.println("ll " + ll + " isEmpty: " + ll.isEmpty());
-        //LinkedList<Integer> ll = new LinkedList<Integer>();
+        // LinkedList<Integer> ll = new LinkedList<Integer>();
 
         // Testing size()
         System.out.println(ll);
