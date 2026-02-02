@@ -54,7 +54,7 @@ public class SinglyLinkedList<E> implements List<E> {
          * @param n the node that should follow this one
          */
         public void setNext(Node<E> n) {
-            // TODO
+            this.next = next;
         }
     } // ----------- end of nested Node class -----------
 
@@ -136,33 +136,93 @@ public class SinglyLinkedList<E> implements List<E> {
             return;
         }
 
-        Node<E> last = head;
-        Node<E> newHead = new Node<E>(e, last);
+        Node<E> newNode = head;
+        Node<E> newHead = new Node<E>(e, newNode);
         head = newHead;
         return;
     }
 
     @Override
     public void addLast(E e) {
-        // TODO
+        if (head == null) {
+            head = new Node<E>(e, head);
+            return;
+        }
+
+        int listSize = size();
+        Node<E> curr = head;
+        for (int currPos = 0; currPos < listSize - 1; currPos++) {
+            curr = curr.getNext();
+        }
+        curr.setNext(new Node<E>(e, curr.getNext()));
+
     }
 
     @Override
     public E remove(int position) {
-        // TODO
-        return null;
+        if (position < 0 || position >= size()) {
+            throw new IllegalArgumentException("Size out of bounce!");
+        } else if (head == null) {
+            throw new IllegalArgumentException("No node to remove!");
+        }
+
+        E removedElement;
+
+        if (position == 0) {
+            removedElement = head.getElement();
+            head = head.getNext();
+        }
+
+        Node<E> prev = head;
+        for (int currPos = 0; currPos < position - 1; currPos++) {
+            prev = prev.getNext();
+        }
+
+        Node<E> toRemove = prev.getNext();
+        removedElement = toRemove.getElement();
+
+        prev.setNext(toRemove);
+        return removedElement;
     }
 
     @Override
     public E removeFirst() {
-        // TODO
-        return null;
+        if (head == null) {
+            throw new IllegalArgumentException("Empty Linked list! Nothing to remove :(");
+        }
+
+        E removedElement;
+        Node<E> toRemove = head;
+        removedElement = toRemove.getElement();
+
+        head = toRemove.getNext();
+        return removedElement;
     }
 
     @Override
     public E removeLast() {
-        // TODO
-        return null;
+        if (head == null) {
+            throw new IllegalArgumentException("Empty Linked list! Nothing to remove :(");
+        }
+
+        E removedElement;
+
+        if (size() == 1) {
+            removedElement = head.getElement();
+            head = null;
+        } else {
+            Node<E> prev = head;
+            // Could do while(prev.getNext().getNext() != null)
+            for (int currPos = 0; currPos < size() - 2; currPos++) {
+                prev = prev.getNext();
+            }
+            Node<E> toRemove = prev.getNext();
+            removedElement = prev.getElement();
+
+            prev.setNext(null);
+        }
+
+        return removedElement;
     }
 
     // @Override
