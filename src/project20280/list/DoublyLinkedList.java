@@ -58,20 +58,44 @@ public class DoublyLinkedList<E> implements List<E> {
 
     @Override
     public boolean isEmpty() {
-        Node<E> prev = head;
-        Node<E> curr = tail;
-
+        return size() == 0;
     }
 
+    // i = position
     @Override
     public E get(int i) {
-        // TODO
-        return null;
+        E element;
+        if(i < 0 || i >= size()) {
+            throw new IllegalArgumentException("Size out of bounds! :(");
+        }
+
+        if (head == null) {
+            return null;
+        } else {
+            if (i == 0) {
+                element = head.getData();
+                return element;
+            }
+            Node<E> curr = head;
+            for (int j = 0; j < i - 1; j++) {
+                curr = curr.getNext();
+            }
+            element = curr.getData();
+        }
+        return element;
     }
 
     @Override
     public void add(int i, E e) {
-        // TODO
+        if(i < 0 || i >= size()) {
+            throw new IllegalArgumentException("Size out of bounds! :(");
+        }
+
+        if(i == 0){
+            Node<E> newHead = new Node<E>(e, head.getPrev(), head.getNext());
+         }
+
+
     }
 
     @Override
