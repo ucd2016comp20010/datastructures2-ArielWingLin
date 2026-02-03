@@ -7,9 +7,9 @@ import java.util.Iterator;
 public class DoublyLinkedList<E> implements List<E> {
 
     private static class Node<E> {
-        private final E data;
+        private E data;
         private Node<E> next;
-        private final Node<E> prev;
+        private Node<E> prev;
 
         public Node(E e, Node<E> p, Node<E> n) {
             data = e;
@@ -31,9 +31,9 @@ public class DoublyLinkedList<E> implements List<E> {
 
     }
 
-    private final Node<E> head;
-    private final Node<E> tail;
-    private final int size = 0;
+    private Node<E> head;
+    private Node<E> tail;
+    private int size = 0;
 
     public DoublyLinkedList() {
         head = new Node<E>(null, null, null);
@@ -70,7 +70,7 @@ public class DoublyLinkedList<E> implements List<E> {
         }
 
         if (head == null) {
-            return null;
+            throw new IllegalArgumentException("Empty Linked List!!");
         } else {
             if (i == 0) {
                 element = head.getData();
@@ -92,16 +92,40 @@ public class DoublyLinkedList<E> implements List<E> {
         }
 
         if(i == 0){
-            Node<E> newHead = new Node<E>(e, head.getPrev(), head.getNext());
+            Node<E> newHead = new Node<E>(e, null, head);
+            head.prev = newHead;
+            head = newHead;
+            ++size;
+            return;
          }
 
+        Node<E> curr = head;
+        for(int count = 0; count < i - 1; count++){
+            curr = curr.getNext();
+        }
+        ++size;
+        Node<E> newNode = new Node<E>(e, curr.getPrev(), curr);
 
+        curr.prev.next = newNode;
+        curr.prev = newNode;
     }
 
+    // Use private E remove(Node<E> n)
     @Override
     public E remove(int i) {
-        // TODO
-        return null;
+        if(i < 0 || i >= size()) {
+            throw new IllegalArgumentException("Size out of bounds! :(");
+        } else if (head == null) {
+            throw new IllegalArgumentException("No node to remove!");
+        }
+
+        E removedElement;
+        Node<E> curr = head;
+        for(int count = 0; count < i - 1; count++){
+            curr = curr.getNext();
+        }
+
+        return remove(curr);
     }
 
     private class DoublyLinkedListIterator<E> implements Iterator<E> {
@@ -125,9 +149,36 @@ public class DoublyLinkedList<E> implements List<E> {
         return new DoublyLinkedListIterator<E>();
     }
 
+    // different from public E remove(int i)!
     private E remove(Node<E> n) {
-        // TODO
-        return null;
+        E removedElement;
+
+        if(head == tail){
+            removedElement = head.getData();
+            head = null;
+            tail = null;
+            return removedElement;
+        }
+
+        else if (n == head) {
+            removedElement = n.getData();
+            head = head.getNext();
+            head.prev = null;
+            return removedElement;
+        }
+
+        else if(n == tail) {
+            removedElement = n.getData();
+            tail.prev.next = null;
+            return removedElement;
+        }
+
+        else{
+            removedElement = n.getData();
+            n.prev.next = n.next;
+            n.next.prev = n.prev;
+        }
+        return removedElement;
     }
 
     public E first() {
@@ -144,24 +195,50 @@ public class DoublyLinkedList<E> implements List<E> {
 
     @Override
     public E removeFirst() {
-        // TODO
+        E removedElement;
+
+        if(head == tail){
+            removedElement = head.getData();
+            head = null;
+            tail = null;
+            return removedElement;
+        }
         return null;
     }
 
     @Override
     public E removeLast() {
-        // TODO
+        E removedElement;
+        // if there is only 1 Node:
+
         return null;
     }
 
     @Override
     public void addLast(E e) {
-        // TODO
+        if(head == tail){
+            Node<E> newHead = new Node<E>(e, null, null);
+            head = newHead;
+        }
+
+        Node<E> curr = head;
+        Node<E> tailToNode = new Node<E>(e, tail.getNext(), null);
+        for(int count = 0; count < size(); count++){
+            curr = curr.getNext();
+        }
     }
 
     @Override
     public void addFirst(E e) {
-        // TODO
+        if(head == tail){
+            Node<E> newHead = new Node<E>(e, null, null);
+            head = newHead;
+        }
+
+        Node<E> headToNode = head;
+        Node<E> newHead = new Node<E>(e, null, headToNode.getPrev());
+        head = newHead;
+        ++size;
     }
 
     public String toString() {

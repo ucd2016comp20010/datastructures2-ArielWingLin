@@ -107,7 +107,7 @@ public class SinglyLinkedList<E> implements List<E> {
 
         if (position == 0) {
             head = new Node<E>(e, head);
-            size++;
+            ++size;
             return;
         }
 
@@ -115,7 +115,7 @@ public class SinglyLinkedList<E> implements List<E> {
         for (int currPosition = 0; currPosition < position - 1; currPosition++) {
             curr = curr.getNext();
         }
-        size++;
+        ++size;
         Node<E> new_node = new Node<E>(e, curr.getNext());
         curr.setNext(new_node);
 //        System.out.println("Start");
