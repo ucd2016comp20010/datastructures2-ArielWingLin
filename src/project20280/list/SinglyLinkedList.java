@@ -22,8 +22,8 @@ public class SinglyLinkedList<E> implements List<E> {
          * @param n reference to a node that should follow the new node
          */
         public Node(E e, Node<E> n) {
-            element = e;
-            next = n;
+            this.element = e;
+            this.next = n;
         }
 
         // Accessor methods
@@ -73,15 +73,11 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public int size() {
-        if (head == null) {
-            return 0;
-        } else {
-            int size = 0;
-            Node<E> curr = head;
-            while (curr != null) {
-                size += 1;
-                curr = curr.getNext();
-            }
+        int size = 0;
+        Node<E> curr = head;
+        while (curr != null) {
+            size += 1;
+            curr = curr.getNext();
         }
         return size;
     }
@@ -114,16 +110,17 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public void add(int position, E e) {
-        if (position < 0 || position >= size()) {
+        if (position < 0 || position > size()) {
             throw new IllegalArgumentException("Position is out of bounce!");
         }
 
         if (position == 0) {
             head = new Node<E>(e, head);
+            return;
         }
 
         Node<E> curr = head;
-        for (int currPosition = 0; currPosition < position; currPosition++) {
+        for (int currPosition = 0; currPosition < position - 1; currPosition++) {
             curr = curr.getNext();
         }
         curr.setNext(new Node<E>(e, curr.getNext()));
@@ -151,16 +148,16 @@ public class SinglyLinkedList<E> implements List<E> {
 
         int listSize = size();
         Node<E> curr = head;
-        for (int currPos = 0; currPos < listSize - 1; currPos++) {
+        while (curr.getNext() != null) {
             curr = curr.getNext();
         }
-        curr.setNext(new Node<E>(e, curr.getNext()));
+        curr.setNext(new Node<E>(e, null));
 
     }
 
     @Override
     public E remove(int position) {
-        if (position < 0 || position >= size()) {
+        if (position < 0 || position > size()) {
             throw new IllegalArgumentException("Size out of bounce!");
         } else if (head == null) {
             throw new IllegalArgumentException("No node to remove!");
@@ -181,7 +178,7 @@ public class SinglyLinkedList<E> implements List<E> {
         Node<E> toRemove = prev.getNext();
         removedElement = toRemove.getElement();
 
-        prev.setNext(toRemove);
+        prev.setNext(toRemove.getNext());
         return removedElement;
     }
 
@@ -217,7 +214,7 @@ public class SinglyLinkedList<E> implements List<E> {
                 prev = prev.getNext();
             }
             Node<E> toRemove = prev.getNext();
-            removedElement = prev.getElement();
+            removedElement = toRemove.getElement();
 
             prev.setNext(null);
         }
@@ -268,6 +265,23 @@ public class SinglyLinkedList<E> implements List<E> {
         System.out.println(ll);
         System.out.println(ll.size());
         System.out.println(ll.isEmpty());
+
+        ll.addFirst(2);
+        ll.addFirst(1);
+        ll.addFirst(4);
+        System.out.println(ll);
+        System.out.println(ll.size());
+        ll.add(1, 3);
+        System.out.println(ll);
+        ll.addLast(4);
+        System.out.println(ll);
+
+        ll.remove(1);
+        System.out.println(ll);
+        ll.removeFirst();
+        System.out.println(ll);
+        ll.removeLast();
+        System.out.println(ll);
 
     }
 }

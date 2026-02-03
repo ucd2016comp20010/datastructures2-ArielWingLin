@@ -47,14 +47,20 @@ public class DoublyLinkedList<E> implements List<E> {
 
     @Override
     public int size() {
-        // TODO
-        return 0;
+        int size = 0;
+        Node<E> curr = head;
+        while (curr.getData() != null) {
+            size += 1;
+            curr = curr.getNext();
+        }
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        // TODO
-        return false;
+        Node<E> prev = head;
+        Node<E> curr = tail;
+
     }
 
     @Override
@@ -150,20 +156,23 @@ public class DoublyLinkedList<E> implements List<E> {
 
     public static void main(String[] args) {
         DoublyLinkedList<Integer> ll = new DoublyLinkedList<Integer>();
-        ll.addFirst(0);
-        ll.addFirst(1);
-        ll.addFirst(2);
-        ll.addLast(-1);
-        System.out.println(ll);
+        // ll.addFirst(0);
+        // ll.addFirst(1);
+        // ll.addFirst(2);
+        // ll.addLast(-1);
+        // System.out.println(ll);
 
-        ll.removeFirst();
-        System.out.println(ll);
+        // ll.removeFirst();
+        // System.out.println(ll);
 
-        ll.removeLast();
-        System.out.println(ll);
+        // ll.removeLast();
+        // System.out.println(ll);
 
-        for (Integer e : ll) {
-            System.out.println("value: " + e);
-        }
+        // for (Integer e : ll) {
+        // System.out.println("value: " + e);
+        // }
+
+        System.out.println(ll);
+        System.out.println(ll.size());
     }
 }
