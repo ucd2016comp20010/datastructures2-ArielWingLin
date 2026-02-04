@@ -32,12 +32,16 @@ public class CircularlyLinkedList<E> implements List<E> {
     private int size = 0;
 
     public CircularlyLinkedList() {
-//        tail = tail.getNext();
     }
 
     @Override
     public boolean isEmpty() {
-        return (tail.next == null);
+        return tail == null;
+    }
+
+    @Override
+    public int size() {
+        return size;
     }
 
     @Override
@@ -47,7 +51,7 @@ public class CircularlyLinkedList<E> implements List<E> {
             throw new IllegalArgumentException("Size out of bounds! :(");
         }
 
-        Node<E> curr = tail;
+        Node<E> curr = tail.next;
         for(int j = 0; j < i; j++) {
             curr = curr.getNext();
         }
@@ -68,6 +72,8 @@ public class CircularlyLinkedList<E> implements List<E> {
         if(size == 0){
             tail = new Node<E>(e, null);
             tail.next = tail;
+            ++size;
+            return;
         }
 
         Node<E> newNode = new Node<E>(e, tail.next);
@@ -94,23 +100,91 @@ public class CircularlyLinkedList<E> implements List<E> {
         }
 
         Node<E> curr = tail;
-        for(int count = 0; count < i - 1; count++) {
+        for(int count = 0; count < i; count++) {
             curr = curr.next;
+//            System.out.println(curr.getData());
         }
-        Node<E> newNode_ = new Node<E>(e, curr);
-        newNode_.next = curr;
+        Node<E> newNode_ = new Node<E>(e, curr.next);
+//        System.out.println(newNode_.getData());
+        curr.next = newNode_;
+        ++size;
+    }
 
+    @Override
+    public E removeFirst() {
+        if(isEmpty()){
+            return null;
+        }
 
+        E removedElement;
+        if(tail.next == tail){
+            removedElement = tail.getData();
+            tail = null;
+            --size;
+            return removedElement;
+        }
+
+        Node<E> head = tail.getNext();
+        removedElement = tail.next.getData();
+        tail.next = head.next;
+        --size;
+        return removedElement;
+    }
+
+    @Override
+    public E removeLast() {
+        if(isEmpty()){
+            throw new IllegalArgumentException("Empty LinkedList!");
+        }
+
+        E removedElement;
+        if(tail.next == tail){
+            removedElement = tail.getData();
+            tail = null;
+            --size;
+            return removedElement;
+        }
+
+        Node<E> curr = tail;
+        while(curr.getNext() != tail) {
+            curr = curr.getNext();
+        }
+        removedElement = tail.getData();
+        curr.next = tail.next;
+        tail = curr;
+        --size;
+        return removedElement;
     }
 
     @Override
     public E remove(int i) {
-        // TODO
-        return null;
+        if(isEmpty()){
+            throw new IllegalArgumentException("Empty LinkedList!");
+        }
+
+        if(i == 0) {
+            removeFirst();
+        } else if(i == size - 1) {
+            removeLast();
+        }
+
+        Node<E> temp = tail.getNext();
+        for(int count = 0; count < i - 1; count++) {
+            temp = temp.next;
+        }
+
+        E removedElement;
+        removedElement = temp.getNext().getData();
+        temp.next = temp.getNext().getNext();
+        --size;
+        return removedElement;
     }
 
     public void rotate() {
-        // TODO
+        if(tail != null && tail.next != tail) {
+            tail = tail.next;
+        }
+        return;
     }
 
     private class CircularlyLinkedListIterator<E> implements Iterator<E> {
@@ -133,23 +207,6 @@ public class CircularlyLinkedList<E> implements List<E> {
     @Override
     public Iterator<E> iterator() {
         return new CircularlyLinkedListIterator<E>();
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
-    public E removeFirst() {
-        // TODO
-        return null;
-    }
-
-    @Override
-    public E removeLast() {
-        // TODO
-        return null;
     }
 
     public String toString() {
@@ -190,6 +247,9 @@ public class CircularlyLinkedList<E> implements List<E> {
 
         ll.removeLast();
         ll.rotate();
+        System.out.println(ll);
+
+        ll.add(1, 100);
         System.out.println(ll);
 
         for (Integer e : ll) {
