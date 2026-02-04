@@ -7,7 +7,7 @@ import java.util.Iterator;
 public class CircularlyLinkedList<E> implements List<E> {
 
     private class Node<T> {
-        private final T data;
+        private T data;
         private Node<T> next;
 
         public Node(T e, Node<T> n) {
@@ -28,34 +28,79 @@ public class CircularlyLinkedList<E> implements List<E> {
         }
     }
 
-    private final Node<E> tail = null;
-    private final int size = 0;
+    private Node<E> tail = null;
+    private int size = 0;
 
     public CircularlyLinkedList() {
-
+//        tail = tail.getNext();
     }
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return (tail.next == null);
     }
 
     @Override
     public E get(int i) {
-        // TODO
-        return null;
+        E element;
+        if(i < 0 || i >= size()) {
+            throw new IllegalArgumentException("Size out of bounds! :(");
+        }
+
+        Node<E> curr = tail;
+        for(int j = 0; j < i; j++) {
+            curr = curr.getNext();
+        }
+        element = curr.getData();
+        return element;
     }
 
     /**
      * Inserts the given element at the specified index of the list, shifting all
      * subsequent elements in the list one position further to make room.
      *
-     * @param i the index at which the new element should be stored
+     //* @param i the index at which the new element should be stored
      * @param e the new element to be stored
      */
+
+    @Override
+    public void addFirst(E e) {
+        if(size == 0){
+            tail = new Node<E>(e, null);
+            tail.next = tail;
+        }
+
+        Node<E> newNode = new Node<E>(e, tail.next);
+        tail.next = newNode;
+        ++size;
+    }
+
+    @Override
+    public void addLast(E e) {
+        addFirst(e);
+        tail = tail.getNext();
+    }
+
     @Override
     public void add(int i, E e) {
-        // TODO
+        if(i < 0 || i > size()) {
+            throw new IllegalArgumentException("Size out of bounds! :(");
+        }
+
+        if (i == 0) {
+            addFirst(e);
+        } else if(i == size()) {
+            addLast(e);
+        }
+
+        Node<E> curr = tail;
+        for(int count = 0; count < i - 1; count++) {
+            curr = curr.next;
+        }
+        Node<E> newNode_ = new Node<E>(e, curr);
+        newNode_.next = curr;
+
+
     }
 
     @Override
@@ -106,17 +151,6 @@ public class CircularlyLinkedList<E> implements List<E> {
         // TODO
         return null;
     }
-
-    @Override
-    public void addFirst(E e) {
-        // TODO
-    }
-
-    @Override
-    public void addLast(E e) {
-        // TODO
-    }
-
 
     public String toString() {
         StringBuilder sb = new StringBuilder("[");

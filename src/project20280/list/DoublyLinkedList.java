@@ -48,7 +48,7 @@ public class DoublyLinkedList<E> implements List<E> {
 
     @Override
     public boolean isEmpty() {
-        return size() == 0;
+        return (head.next == tail);
     }
 
     // i = position
@@ -59,15 +59,15 @@ public class DoublyLinkedList<E> implements List<E> {
             throw new IllegalArgumentException("Size out of bounds! :(");
         }
 
-        if (head == null) {
+        if (head.next == null) {
             throw new IllegalArgumentException("Empty Linked List!!");
         } else {
             if (i == 0) {
-                element = head.getData();
+                element = head.next.getData();
                 return element;
             }
             Node<E> curr = head;
-            for (int j = 0; j < i - 1; j++) {
+            for (int j = 0; j <= i; j++) {
                 curr = curr.getNext();
             }
             element = curr.getData();
@@ -108,25 +108,64 @@ public class DoublyLinkedList<E> implements List<E> {
         }
 
         if(i == 0){
-            Node<E> newHead = new Node<E>(e, null, head);
-            head.prev = newHead;
-            head = newHead;
-            ++size;
+//            Node<E> newHead = new Node<E>(e, null, head);
+//            head.prev = newHead;
+//            head = newHead;
+//            ++size;
+//            return;
+            addBetween(e, head, head.next);
             return;
          }
 
-        Node<E> curr = head;
-        for(int count = 0; count < i - 1; count++){
-            curr = curr.getNext();
+        if(i == size()){
+            addBetween(e,tail.prev, tail);
+            return;
         }
-        ++size;
-        Node<E> newNode = new Node<E>(e, curr, curr.getNext());
 
-        if(curr.next != null) {
-            curr.prev.next = newNode;
+        Node<E> curr = head.next;
+        for(int count = 0; count < i; count++){
+            curr = curr.next;
         }
-        curr.next = newNode;
 
+//        Node<E> newNode = new Node<E>(e, curr, curr.getNext());
+//
+//        if(curr.next != null) {
+//            curr.prev.next = newNode;
+//        }
+//        curr.next = newNode;
+        addBetween(e, curr.prev, curr);
+
+    }
+
+    @Override
+    public void addFirst(E e) {
+//        if(head == tail){
+//            Node<E> newHead = new Node<E>(e, null, null);
+//            head = newHead;
+//            tail = newHead;
+//            return;
+//        }
+//
+//        Node<E> headToNode = head;
+//        Node<E> newHead = new Node<E>(e, null, head);
+//        head = newHead;
+//        headToNode.prev = head;
+//        ++size;
+        addBetween(e, head, head.next);
+    }
+
+    @Override
+    public void addLast(E e) {
+//        if(head == tail){
+//            Node<E> newHead = new Node<E>(e, null, null);
+//            head = newHead;
+//            tail = newHead;
+//        }
+//        Node<E> newTail = new Node<E>(e, tail, null);
+//        tail.next = newTail;
+//        tail = newTail;
+//        ++size;
+        addBetween(e, tail.prev, tail);
     }
 
     private E remove(Node<E> n) {
@@ -171,7 +210,7 @@ public class DoublyLinkedList<E> implements List<E> {
 
         E removedElement;
         Node<E> curr = head;
-        for(int count = 0; count < i; count++){
+        for(int count = 0; count <= i; count++){
             curr = curr.getNext();
         }
 
@@ -216,37 +255,6 @@ public class DoublyLinkedList<E> implements List<E> {
             return null;
         }
         return remove(tail.prev);
-    }
-
-    @Override
-    public void addFirst(E e) {
-        if(head == tail){
-            Node<E> newHead = new Node<E>(e, null, null);
-            head = newHead;
-            tail = newHead;
-            return;
-        }
-
-        Node<E> headToNode = head;
-        Node<E> newHead = new Node<E>(e, null, head);
-        head = newHead;
-        headToNode.prev = head;
-        ++size;
-//        addBetween(e, null, head.next);
-    }
-
-    @Override
-    public void addLast(E e) {
-        if(head == tail){
-            Node<E> newHead = new Node<E>(e, null, null);
-            head = newHead;
-            tail = newHead;
-        }
-        Node<E> newTail = new Node<E>(e, tail, null);
-        tail.next = newTail;
-        tail = newTail;
-        ++size;
-//        addBetween(e, tail.prev, null);
     }
 
     private class DoublyLinkedListIterator<E> implements Iterator<E> {
@@ -307,6 +315,7 @@ public class DoublyLinkedList<E> implements List<E> {
         // }
 
         System.out.println(ll);
+        System.out.println(ll.isEmpty());
         System.out.println(ll.size());
     }
 }
