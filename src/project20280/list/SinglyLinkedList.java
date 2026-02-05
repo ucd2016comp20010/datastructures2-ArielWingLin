@@ -4,7 +4,7 @@ import project20280.interfaces.List;
 
 import java.util.Iterator;
 
-public class SinglyLinkedList<E> implements List<E> {
+public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
 
     private static class Node<E> {
 
@@ -70,6 +70,58 @@ public class SinglyLinkedList<E> implements List<E> {
 
     public SinglyLinkedList() {
     } // constructs an initially empty list
+
+    // Q9:
+    public SinglyLinkedList<E> sortedMerge(SinglyLinkedList<E> l2) {
+        SinglyLinkedList<E> result = new SinglyLinkedList<>();
+
+        Node<E> curr1 = this.head;
+        Node<E> curr2 = l2.head;
+
+        while(curr1 != null && curr2 != null) {
+            if (curr1.getElement().compareTo(curr2.getElement()) <= 0) {
+                result.addLast(curr1.getElement());
+                curr1 = curr1.getNext();
+            } else {
+                result.addLast(curr2.getElement());
+                curr2 = curr2.getNext();
+            }
+        }
+
+            while(curr1 != null) {
+                result.addLast(curr1.getElement());
+                curr1 = curr1.getNext();
+            }
+
+            while(curr2 != null) {
+                result.addLast(curr2.getElement());
+                curr2 = curr2.getNext();
+            }
+        return result;
+    }
+
+    // Q10: Reverse a linked list
+    public SinglyLinkedList<E> reverseLink() {
+        Node<E> curr = head;
+        SinglyLinkedList reverse = new SinglyLinkedList<>();
+        for(int count = 0; count < size(); count++) {
+            reverse.addFirst(curr.getElement());
+            curr = curr.getNext();
+        }
+        return reverse;
+    }
+
+    // Q11: Cloning a linked list:
+    public SinglyLinkedList<E> cloneList() {
+        SinglyLinkedList<E> newCloned = new SinglyLinkedList<>();
+        Node<E> curr = head;
+
+        while(curr != null) {
+            newCloned.addLast(curr.getElement());
+            curr = curr.getNext();
+        }
+        return newCloned;
+    }
 
     @Override
     public int size() {
@@ -299,5 +351,26 @@ public class SinglyLinkedList<E> implements List<E> {
         ll.removeLast();
         System.out.println(ll);
         System.out.println("Size: " + ll.size());
+
+        SinglyLinkedList l1 = new SinglyLinkedList();
+        SinglyLinkedList l2 = new SinglyLinkedList();
+
+        l1.addLast(2);
+        l1.addLast(6);
+        l1.addLast(20);
+        l1.addLast(24);
+
+        l2.addLast(1);
+        l2.addLast(3);
+        l2.addLast(5);
+        l2.addLast(8);
+        l2.addLast(12);
+        l2.addLast(19);
+        l2.addLast(25);
+
+        System.out.println(l1.sortedMerge(l2));
+        System.out.println(l1.reverseLink());
+        System.out.println("Original: " + l1);
+        System.out.println("Cloned: " + l1.cloneList());
     }
 }
