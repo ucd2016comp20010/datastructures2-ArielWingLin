@@ -37,7 +37,6 @@ public class LinkedQueue<E> implements Queue<E> {
 
     @Override
     public E dequeue() {
-        if(isEmpty()) return null;
         return ll.removeFirst();
 }
 

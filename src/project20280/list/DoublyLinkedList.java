@@ -116,6 +116,8 @@ public class DoublyLinkedList<E> implements List<E> {
             addBetween(e, head, head.next);
             return;
          }
+        // do you have size++ or ++ size?
+
 
         if(i == size()){
             addBetween(e,tail.prev, tail);
@@ -175,6 +177,7 @@ public class DoublyLinkedList<E> implements List<E> {
             removedElement = head.getData();
             head = null;
             tail = null;
+            size--;
             return removedElement;
         }
 
@@ -182,12 +185,14 @@ public class DoublyLinkedList<E> implements List<E> {
             removedElement = n.getData();
             head = head.getNext();
             head.prev = null;
+            size--;
             return removedElement;
         }
 
         else if(n == tail) {
             removedElement = n.getData();
             tail.prev.next = null;
+            size--;
             return removedElement;
         }
 
@@ -195,6 +200,7 @@ public class DoublyLinkedList<E> implements List<E> {
             removedElement = n.getData();
             n.prev.next = n.next;
             n.next.prev = n.prev;
+            size--;
         }
         return removedElement;
     }
@@ -315,7 +321,18 @@ public class DoublyLinkedList<E> implements List<E> {
         // }
 
         System.out.println(ll);
-        System.out.println(ll.isEmpty());
+        ll.addFirst(100);
+        System.out.println(ll);
         System.out.println(ll.size());
+
+        System.out.println("removed element: " + ll.remove(0));
+        System.out.println(ll);
+        System.out.println("calling size function: " + ll.size());
+        System.out.println("calling size var: " + ll.size);
+        System.out.println("calling isEmpty(): " + ll.isEmpty());
+
+        // i don't know the exact issue but it's defo the size thing being wrong. I think all the other functions work fine, but she forgot to either decrement size or incremenet size
+        // since her is empty, funcgtion works fine. I think it's somethign else.
+
     }
 }

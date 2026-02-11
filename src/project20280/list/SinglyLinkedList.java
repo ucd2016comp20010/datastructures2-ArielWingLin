@@ -249,6 +249,7 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
 
         head = toRemove.getNext();
         --size;
+
         return removedElement;
     }
 

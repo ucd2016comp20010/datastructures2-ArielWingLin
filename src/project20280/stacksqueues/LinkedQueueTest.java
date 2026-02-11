@@ -44,11 +44,10 @@ class LinkedQueueTest {
     @Test
     void testDequeue() {
         LinkedQueue<Integer> s = new LinkedQueue<>();
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < 10; i++)
             s.enqueue(i);
+       assertEquals(0, s.dequeue());
+       assertEquals(9, s.size());
 
-        assertEquals(0, s.dequeue());
-        assertEquals(9, s.size());
     }
-
 }
