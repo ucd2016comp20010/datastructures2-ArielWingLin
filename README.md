@@ -1,3 +1,4 @@
+Practical: Stacks + Queues
 Q2: 
 Goal: Implement Queue with 2 stacks 
 
@@ -64,3 +65,85 @@ A:
    - digiToChar = (char) ('0' + remainder)
    - > This returns c
    
+
+Practical: Trees 1
+Q2: 
+To start off, a recursive method is formed - public int countExternalB(tree, p)
+tree: The binary tree you would like to count its external nodes
+p: Specific position in tree
+And this method returns the total number of external nodes of a tree
+
+if T.isExternal(p) 
+  return 1; 
+// If the node of position p is already external(a leaf) 
+// -> return total num of external nodes as 1 
+
+else
+  total = 0;
+  for (Position<E> c : children(p)) - for each child c in tree.children(p)
+  total = total + countExternalNodes(T, c)
+return total;
+
+
+Q3: 
+To count only the left side 
+Method: public int countLeftExternalB(p);
+p: a position p in a binary tree
+Output: total num of left external nodes in a subtree rooted at p
+
+// Let total be 0
+total = 0;
+// Checks if the left child exists, 
+// -> if so, then check if it is an external
+
+// If yes -> add 1 to total
+// If no  -> total num of external left nodes atm + check for that node's children and loop
+if left(p) != 0 {
+  if isExternal(left(p)) {
+    total += 1;
+  }
+  else {
+    total = total + countLeftExternalB(left(p));
+  }
+
+// Check the right child (doesn't add 1 so it checks its children)
+  if right(p) != null {
+    total = total + countLeftExternal(right(p));
+  }
+ return total;
+}
+
+Q5: 
+To count the total num of descendants of a particular node in the 
+binary tree..
+Method: public int countDescendantsB(p)
+p: specific position of a node in a tree
+Output: returns total num of descendants of node p
+
+int total = 0;
+
+if left(p) != null
+  total = total + 1 + countDescendantsB(left(p));
+
+if right(p) != null
+  total = total  + 1 + countDescendantsB(right(p));
+
+return total;
+
+
+Tree || 
+Q5: 
+To find the diameter of a binary tree: 
+Method: public int findDiamter(p)
+p     : Position of (sub)tree
+Output: returns diamater of that tree
+
+Initialize diameter = 0;
+if root == null -> return 0; (If the root of the tree is nothing -> no depth/diamter)
+int leftHeight  -> if left(p) != null -> height_recursive(left(p)), otherwise return 0
+int rightHeight -> if right(p) != null -> height_recursive(right(p)), otherwise return 0
+
+int leftDiameter  -> if left(p) != null -> diameter(left(p)), otherwise return 0
+int rightDiameter -> if right(p) != null -> diameter(right(p)), otherwise return 0
+
+Use Math.max(..) to get the largest diameter among the rest.
