@@ -70,7 +70,13 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         newTree.construct(inorder , preorder);
         System.out.println(newTree.toBinaryTreeString());
 
-        Q6();
+        // Q6 on trees 1 or 2:
+//        Q6();
+
+        // Q9 on recursive:
+        bt.printLeaf();
+
+        Q10();
     }
 
     // Q3:
@@ -196,6 +202,27 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
             System.out.println(n + "," + avgHeight);
         }
     }
+
+    // Q10 on Recursion: Checking the complexity of inorder: O(n)
+    // As it exactly visits each node at most once!
+    // Based on the graph, only the first one takes a lot longer as
+    // as the one with n = 10, as the computer only started "waking up"
+    // -> only then it is triggered to build the tree (wake up time + set up)
+    // As for the rest, it is only set up!
+    public static void Q10() {
+            System.out.println("n\tTime (ns)");
+            for (int n = 10; n <= 10000; n += 500) {
+                // You MUST create an instance (tree) to call inorder()
+                LinkedBinaryTree<Integer> tree = LinkedBinaryTree.makeRandom(n);
+
+                long start = System.nanoTime();
+                tree.inorder();
+                long end = System.nanoTime();
+
+                System.out.println(n + "\t" + (end - start));
+            }
+    }
+
     /**
      * Factory function to create a new node storing element e.
      */
@@ -466,6 +493,23 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
             return node;
         }
         return null;
+    }
+
+    // Q9 on Recursive: Only printing the leaf nodes from left to right
+    public void printLeaf() {
+        System.out.println("[");
+        printLeafHelper(root);
+        System.out.println("]");
+    }
+
+    private void printLeafHelper(Node<E> node) {
+        if(node == null) return;
+        if (node.getLeft() == null && node.getRight() == null) {
+            System.out.println(node.getElement());
+        }
+
+        printLeafHelper(node.getLeft());
+        printLeafHelper(node.getRight());
     }
 
     public String toBinaryTreeString() {

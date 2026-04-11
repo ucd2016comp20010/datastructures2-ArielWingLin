@@ -29,8 +29,13 @@ public class UnsortedTableMap<K, V> extends AbstractMap<K, V> {
      * Returns the index of an entry with equal key, or -1 if none found.
      */
     private int findIndex(K key) {
-        // TODO
-        return 0;
+        int n = table.size();
+        for(int j = 0; j < n; j++) {
+            if(table.get(j).getKey().equals(key)) {
+                return j;
+            }
+        }
+        return -1;
     }
 
     // public methods
@@ -52,10 +57,14 @@ public class UnsortedTableMap<K, V> extends AbstractMap<K, V> {
      * @param key the key whose associated value is to be returned
      * @return the associated value, or null if no such entry exists
      */
+    // Returns value of the key that is specified.
     @Override
     public V get(K key) {
-        // TODO
-        return null;
+        int i = findIndex(key);
+        if(i == -1) {
+            return null;
+        }
+        return table.get(i).getValue();
     }
 
     /**
@@ -68,10 +77,20 @@ public class UnsortedTableMap<K, V> extends AbstractMap<K, V> {
      * @return the previous value associated with the key (or null, if no such
      * entry)
      */
+    // This replaces the value of the specified key
     @Override
     public V put(K key, V value) {
-        // TODO
-        return null;
+        int i = findIndex(key);
+        // If there is no (hash)map
+        if(i == -1) {
+            // Creates a new one
+            table.add(new MapEntry<>(key, value));
+            return null;
+        } else {
+            // Go to the position of i in the table and set it to the
+            // new value.
+            return table.get(i).setValue(value);
+        }
     }
 
     /**
@@ -84,8 +103,18 @@ public class UnsortedTableMap<K, V> extends AbstractMap<K, V> {
      */
     @Override
     public V remove(K key) {
-        // TODO
-        return null;
+        int i = findIndex(key);
+        int n = size();
+        if(i < -1) {
+            return null;
+        }
+        V removed = table.get(i).getValue();
+        //
+        if(i != n - 1) {
+            table.set(i, table.get(n-1));
+            table.remove(n-1);
+        }
+        return removed;
     }
 
     // ---------------- nested EntryIterator class ----------------

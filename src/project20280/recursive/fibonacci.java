@@ -18,23 +18,23 @@ public class fibonacci {
         long oneMin = 60000;
 
         // While the timer is still under the 1 minute limit
-//        while(true) {
-//            callCount = 0;
-//            long result = fibonacci(n);
-//
-//            // makes sure that it is under the time limit
-//            long endTask = System.currentTimeMillis();
-//            long duration = endTask - startTime;
-//            System.out.println("F: (" + n + ") = " + result);
-//
-//            if (duration > oneMin) {
-//                System.out.println("\n--- LIMIT REACHED ---");
-//                System.out.println("The largest Fibonacci number computed is: F(" + n + ")");
-//                System.out.println("Total recursive calls for this number: " + callCount);
-//                break;
-//            }
-//            n++;
-//          }
+        while(true) {
+            callCount = 0;
+            long result = fibonacci(n);
+
+            // makes sure that it is under the time limit
+            long endTask = System.currentTimeMillis();
+            long duration = endTask - startTime;
+            System.out.println("F: (" + n + ") = " + result);
+
+            if (duration > oneMin) {
+                System.out.println("\n--- LIMIT REACHED ---");
+                System.out.println("The largest Fibonacci number computed is: F(" + n + ")");
+                System.out.println("Total recursive calls for this number: " + callCount);
+                break;
+            }
+            n++;
+          }
         int triNum = 9;
         System.out.println("Tri: (" + triNum + "): " + tribonacci(triNum));
 

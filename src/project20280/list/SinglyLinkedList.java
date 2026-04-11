@@ -111,6 +111,35 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
         return reverse;
     }
 
+
+    // Q6 on Recursive: to reverse a singly linked list:
+    public SinglyLinkedList<E> reverseSinglyRecursive() {
+        SinglyLinkedList reverse = new SinglyLinkedList<>();
+        reverseHelper(head, reverse);
+        return reverse;
+    }
+
+    public void reverseHelper(Node<E> curr, SinglyLinkedList<E> reverseList) {
+        if (curr == null) return;
+
+        reverseList.addFirst(curr.getElement());
+        reverseHelper(curr.getNext(), reverseList);
+    }
+
+    // Q7 on recursive: copies a linked list
+    public SinglyLinkedList<E> copySinglyRecursive() {
+        SinglyLinkedList<E> clone = new SinglyLinkedList<>();
+        copyHelper(head, clone);
+        return clone;
+    }
+
+    public void copyHelper(Node<E> curr, SinglyLinkedList newList) {
+        if(curr == null) return;
+
+        newList.addLast(curr.getElement());
+        copyHelper(curr.getNext(), newList);
+    }
+
     // Q11: Cloning a linked list:
     public SinglyLinkedList<E> cloneList() {
         SinglyLinkedList<E> newCloned = new SinglyLinkedList<>();
@@ -370,8 +399,11 @@ public class SinglyLinkedList<E extends Comparable<E>> implements List<E> {
         l2.addLast(25);
 
         System.out.println(l1.sortedMerge(l2));
-        System.out.println(l1.reverseLink());
-        System.out.println("Original: " + l1);
-        System.out.println("Cloned: " + l1.cloneList());
+        System.out.println("Normal reverse: " + l1.reverseLink());
+        System.out.println("Recursive reverse: " + l1.reverseSinglyRecursive());
+        System.out.println("Original : " + l1);
+        System.out.println("Cloned : " + l1.cloneList());
+        System.out.println("Original : " + l1);
+        System.out.println("Cloned with reverse : " + l1.cloneList());
     }
 }
