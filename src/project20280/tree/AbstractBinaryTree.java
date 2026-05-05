@@ -82,7 +82,9 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E>
         if(left(p) != null) {                    // If the left child node is not empty
             inorderSubtree(left(p), snapshot);   // Start traversing the left subtree (since left > right)
         }
-        snapshot.add(p);                         // Add to snapshot list
+        if(isInternal(p)) {
+            snapshot.add(p);
+        }
         if(right(p) != null) {                   // Otherwise if right node != isEmpty()
             inorderSubtree(right(p), snapshot);  // Start traversing the right subtree
         }

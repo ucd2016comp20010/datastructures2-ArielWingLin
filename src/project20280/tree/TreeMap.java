@@ -5,6 +5,7 @@ import project20280.interfaces.Position;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -549,8 +550,29 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
         return buffer;
     }
 
+    @Override
+    public Iterable<K> keySet() {
+        java.util.List<K> keys = new java.util.ArrayList<>();
+        for (Entry<K, V> entry : this.entrySet()) {
+            keys.add(entry.getKey());
+        }
+        return keys; // ArrayList's toString() returns "[1, 2, 4...]"
+    }
+
+    @Override
     public String toString() {
-        return tree.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Iterable<K> keys = this.keySet();
+        java.util.Iterator<K> it = keys.iterator();
+        while (it.hasNext()) {
+            sb.append(it.next());
+            if (it.hasNext()) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
     /**
@@ -645,5 +667,80 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
             }
         }
         System.out.println(avl.toBinaryTreeString());
+
+        // Q2:
+        TreeMap<Integer, Integer> bst_inorder = new TreeMap<>();
+        Random rnd_inorder = new Random();
+        int n_max_inorder = 50;
+        int n_inorder = 20;
+
+        rnd.ints(1, n_max)
+                .limit(n)
+                .distinct()
+                .boxed()
+                .forEach(x -> bst_inorder.put(x, x));
+
+        // Print the tree visually
+        BinaryTreePrinter<Entry<Integer, Integer>> btp_inorder = new BinaryTreePrinter<>(bst_inorder.tree);
+        System.out.println(btp.print());
+
+        // Print the inorder traversal to verify sorting
+        System.out.println("Inorder traversal: " + bst_inorder.tree.inorder());
+
+        // Question 3:
+        // ensure we put() a node which doesn't already exist in the tree
+        // ensure we remove() a node which does exist in the tree
+        int n_inital = 100;   // This is the requirement for making a tree with 100 nodes
+        int n_max_Q3 = 1000;
+        int n_trials = 10000;
+
+        // Creates a random node with a random number under the max value possible set
+        while (treeMap.size() < 100) {
+            int x = rnd.nextInt(n_max_Q3);
+            treeMap.put(x, x);
+        }
+
+        // 10,000 Operations
+        for(int i = 0; i < n_trials; ++i) {
+            // 50% to add it
+            if(treeMap.size() < n_max_Q3 && rnd.nextFloat() > 0.5) {
+                int x = rnd.nextInt(n_max_Q3 * 2);
+                treeMap.put(x, x);
+            } else { // 50% to remove
+                if(treeMap.size() == 0) continue;
+                Integer keyToRemove = treeMap.keySet().iterator().next();
+                treeMap.remove(keyToRemove);
+            }
+        }
     }
 }
+
+
+// Q4:
+/*
+For sorting a binary search tree, its structure is similar to PQ sort.
+For PQ sort, it sorts by repeatedly grabbing the smallest value and remove it
+For BST sort, it sorts by building a structure that respects the "Left -> Root -> Right"
+
+public List<Integer> sortUsingbst(List<Integer> unsortedList, String treeType) {
+    // Phase 1: Initialize the specific tree
+    TreeMap<Integer, Integer> tree = new TreeMap<>();
+
+    // Phase 2: "Add every element"
+    for (Integer x : unsortedList) {
+        tree.put(x, x);
+    }
+
+    // Phase 3: "Do inorder traversal and return it"
+    List<Integer> sortedList = new ArrayList<>();
+    for (Integer key : tree.keySet()) {
+        sortedList.add(key);
+    }
+
+    return sortedList;
+}
+
+Complexity: O(nlogn)
+logn: due to the put() in the TreeMap
+As it may require n times to add the all the elements required -> therefore O(nlogn)
+ */
